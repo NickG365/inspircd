@@ -68,7 +68,10 @@ class InvisibleMode : public ModeHandler
 				}
 			}
 
-			ServerInstance->SNO->WriteToSnoMask('a', "\2NOTICE\2: Oper %s has become %svisible (%cQ)", dest->GetFullHost().c_str(), adding ? "in" : "", adding ? '+' : '-');
+			if (IS_LOCAL(dest))
+			{
+				ServerInstance->SNO->WriteToSnoMask('a', "Oper %s has become %svisible (%cQ)", dest->GetFullHost().c_str(), adding ? "in" : "", adding ? '+' : '-');
+			}
 			return MODEACTION_ALLOW;
 		}
 		else
@@ -131,7 +134,7 @@ static void BuildExcept(Membership* memb, CUList& excepts)
 	const UserMembList* users = memb->chan->GetUsers();
 	for(UserMembCIter i = users->begin(); i != users->end(); i++)
 	{
-		if (IS_LOCAL(i->first) && i->first->HasPrivPermission("invisible/see"))
+		if (IS_LOCAL(i->first) && !IS_OPER(i->first))
 			excepts.insert(i->first);
 	}
 }
@@ -141,8 +144,11 @@ void ModuleInvisible::OnUserJoin(Membership* memb, bool sync, bool created, CULi
 	if (hidejoin && memb->user->IsModeSet('Q'))
 	{
 		BuildExcept(memb, excepts);
-		ServerInstance->SNO->WriteToSnoMask('a', "\2NOTICE\2: Oper %s has joined %s invisibly (+Q)",
-			memb->user->GetFullHost().c_str(), memb->chan->name.c_str());
+		if (IS_LOCAL(memb->user))
+		{
+			ServerInstance->SNO->WriteToSnoMask('a', "Oper %s has joined %s invisibly (+Q)",
+				memb->user->GetFullHost().c_str(), memb->chan->name.c_str());
+		}
 	}
 }
 
