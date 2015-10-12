@@ -41,7 +41,10 @@ class ModuleBanSyncExtban : public Module
 		if ((mask.length() > 2) && (mask[0] == 'J') && (mask[1] == ':'))
 		{
 			std::string rm = mask.substr(2);
-			if (ServerInstance->FindChan(rm)->IsBanned(user))
+			Channel* channel = ServerInstance->FindChan(rm);
+			if (channel == NULL)
+				return MOD_RES_PASSTHRU;
+			if (channel->IsBanned(user))
 				return MOD_RES_DENY;
 		}
 		return MOD_RES_PASSTHRU;
