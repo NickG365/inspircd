@@ -26,9 +26,6 @@ class ModuleBanSyncExtban : public Module
 		if ((mask.length() > 2) && (mask[0] == 'J') && (mask[1] == ':'))
 		{
 			std::string rm = mask.substr(2);
-			ModeHandler* mh = ServerInstance->Modes->FindPrefix(rm[0]);
-			if (mh)
-				rm = mask.substr(3);
             if (ServerInstance->FindChan(rm)->IsBanned(user))
                 return MOD_RES_DENY;
 		}
