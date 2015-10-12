@@ -33,7 +33,7 @@ class ModuleBanSyncExtban : public Module
 
 	Version GetVersion()
 	{
-		return Version("Extban 'J' - check bans from other channels", VF_OPTCOMMON|VF_VENDOR);
+		return Version("Extban 'J' - check bans from other channels", VF_OPTCOMMON);
 	}
 
 	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask)
