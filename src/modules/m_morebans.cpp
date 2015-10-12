@@ -64,10 +64,6 @@ class ModuleLargeBanList : public Module
 		OnRehash(NULL);
 	}
 
-	~ModuleLargeBanList()
-	{
-	}
-
 	void OnRehash(User* user)
 	{
 		for (chan_hash::iterator i = ServerInstance->chanlist->begin(); i != ServerInstance->chanlist->end(); )
