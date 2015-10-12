@@ -15,11 +15,11 @@ class LargeBanListMode : public ModeHandler
 	{
 		if (channel->IsModeSet(this) == adding)
 			return MODEACTION_DENY;
-        long newmax = strtol(parameter.c_str(), NULL, 10);
-        if (newmax <= channel->GetMaxBans())
-            return MODEACTION_DENY;
-        ServerInstance->Config->maxbans[channel->name] = newmax;
-        channel->ResetMaxBans();
+		long newmax = strtol(parameter.c_str(), NULL, 10);
+		if (newmax <= channel->GetMaxBans())
+			return MODEACTION_DENY;
+		ServerInstance->Config->maxbans[channel->name] = newmax;
+		channel->ResetMaxBans();
 		channel->SetModeParam(this, parameter);
 		return MODEACTION_ALLOW;
 	}
@@ -38,7 +38,7 @@ class ModuleLargeBanList : public Module
 	{
 		ServerInstance->Modules->AddService(mode);
 
-        Implementation eventlist[] = { I_OnRehash };
+		Implementation eventlist[] = { I_OnRehash };
 		ServerInstance->Modules->Attach(eventlist, this, sizeof(eventlist)/sizeof(Implementation));
 
 		OnRehash(NULL);
@@ -50,17 +50,17 @@ class ModuleLargeBanList : public Module
 
 	void OnRehash(User* user)
 	{
-        for (chan_hash::iterator i = ServerInstance->chanlist->begin(); i != ServerInstance->chanlist->end(); )
-        {
-            Channel* channel = i->second;
-            ++i;
-            if (channel->IsModeSet('E'))
-            {
-                long newmax = strtol(channel->GetModeParameter('E').c_str(), NULL, 10);
-                ServerInstance->Config->maxbans[channel->name] = newmax;
-                channel->ResetMaxBans();
-            }
-        }
+		for (chan_hash::iterator i = ServerInstance->chanlist->begin(); i != ServerInstance->chanlist->end(); )
+		{
+			Channel* channel = i->second;
+			++i;
+			if (channel->IsModeSet('E'))
+			{
+				long newmax = strtol(channel->GetModeParameter('E').c_str(), NULL, 10);
+				ServerInstance->Config->maxbans[channel->name] = newmax;
+				channel->ResetMaxBans();
+			}
+		}
 	}
 
 	Version GetVersion()
