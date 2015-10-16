@@ -90,7 +90,7 @@ class ModuleLargeBanList : public Module
 
 	Version GetVersion()
 	{
-		return Version("Allows increasing the ban list limit for specific channels with channel mode +l (max)");
+		return Version("Allows increasing the ban list limit for specific channels with channel mode +E (max)");
 	}
 };
 
