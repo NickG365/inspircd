@@ -32,7 +32,8 @@ class DelayJoinMode : public ModeHandler
  public:
 	DelayJoinMode(Module* Parent) : ModeHandler(Parent, "delayjoin", 'D', PARAM_NONE, MODETYPE_CHANNEL)
 	{
-		levelrequired = HALFOP_VALUE;
+		ConfigTag* conf = ServerInstance->Config->ConfValue("delayjoin");
+		levelrequired = (conf && conf->getBool("allowhalfop", false)) ? HALFOP_VALUE : OP_VALUE;
 	}
 
 	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding);
