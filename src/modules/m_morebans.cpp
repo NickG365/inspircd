@@ -33,17 +33,17 @@ class LargeBanListMode : public ModeHandler
 
 	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding)
 	{
-        // Removing mode that wasn't set
+		// Removing mode that wasn't set
 		if (channel->IsModeSet(this) == false && !adding)
 			return MODEACTION_DENY;
-        // Removing mode
+		// Removing mode
 		if (channel->IsModeSet(this) && !adding)
-        {
+		{
 			ServerInstance->Config->maxbans[channel->name] = ServerInstance->Config->maxbans.count("*") ? ServerInstance->Config->maxbans["*"] : 64;
 			channel->ResetMaxBans();
 			return MODEACTION_ALLOW;
 		}
-        // Adding or updating mode
+		// Adding or updating mode
 		long newmax = strtol(parameter.c_str(), NULL, 10);
 		if (newmax == channel->GetMaxBans() || newmax == (ServerInstance->Config->maxbans.count("*") ? ServerInstance->Config->maxbans["*"] : 64))
 			return MODEACTION_DENY;
