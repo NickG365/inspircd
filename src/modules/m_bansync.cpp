@@ -38,14 +38,20 @@ class ModuleBanSyncExtban : public Module
 
 	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask)
 	{
+		static bool recursing = false;
+		
 		if ((mask.length() > 2) && (mask[0] == 'J') && (mask[1] == ':'))
 		{
+			if (recursing)
+				return MOD_RES_PASSTHRU;
 			std::string rm = mask.substr(2);
 			Channel* channel = ServerInstance->FindChan(rm);
 			if (channel == NULL)
 				return MOD_RES_PASSTHRU;
+			recursing = true;
 			if (channel->IsBanned(user))
 				return MOD_RES_DENY;
+			recursing = false;
 		}
 		return MOD_RES_PASSTHRU;
 	}
