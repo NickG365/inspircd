@@ -46,7 +46,7 @@ class ModuleBanSyncExtban : public Module
 				return MOD_RES_PASSTHRU;
 			std::string rm = mask.substr(2);
 			Channel* channel = ServerInstance->FindChan(rm);
-			if (channel == NULL)
+			if (channel == NULL || channel == c)
 				return MOD_RES_PASSTHRU;
 			recursing = true;
 			if (channel->IsBanned(user))
